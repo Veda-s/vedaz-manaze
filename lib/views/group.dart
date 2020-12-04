@@ -9,7 +9,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:intl/intl.dart';
 
-class GroupBody extends StatelessWidget {
+/* class GroupBody extends StatelessWidget {
   final String docId;
   GroupBody({this.docId});
 
@@ -22,112 +22,113 @@ class GroupBody extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data != null) {
-            if (snapshot.data.data['students'] != null) {
               return Scaffold(
-                  drawer: Drawer(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        DrawerHeader(
-                          child: Text('Drawer Header'),
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrange,
-                          ),
+                drawer: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      DrawerHeader(
+
+
+
+                  child: Text('',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),),
+                        decoration: BoxDecoration(
+                          color: Colors.deepOrange,
                         ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        ListTile(
-                          title: Text('Mark Attendance'),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MarkAttendanceBody(
-                                          group: docId,
-                                        )));
-                          },
-                        ),
-                        ListTile(
-                          title: Text('Create Test'),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Marks(
-                                          group: docId,
-                                        )));
-                          },
-                        ),
-                        ListTile(
-                          title: Text('Peek Attendance Record'),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AttendancePeek(
-                                          title: 'yes',
-                                          group: docId,
-                                        )));
-                          },
-                        ),
-                        ListTile(
-                          leading:
-                              Icon(Icons.star_border, color: Colors.deepOrange),
-                          title: Text('Peek Test Score'),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MarksBody(
-                                        group: 'A2IQlTxWyZ3Y7LqSJTq0',
-                                        subject: 'MAT',
-                                        date: '2020-11-08')));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  backgroundColor: Colors.white,
-                  bottomNavigationBar: new BottomAppBar(
-                    color: Colors.white,
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () => {
-                            Navigator.push(
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ListTile(
+                        title: Text('Mark Attendance'),
+                        onTap: () {
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()),
-                            )
-                          },
-                          icon: Icon(
-                            Icons.home,
-                            color: Colors.deepOrange,
-                          ),
+                                  builder: (context) => MarkAttendanceBody(
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Create Test'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Marks(
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Peek Attendance Record'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AttendancePeek(
+                                        title: 'yes',
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        leading:
+                            Icon(Icons.star_border, color: Colors.deepOrange),
+                        title: Text('Peek Test Score'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MarksBody(
+                                      group: 'A2IQlTxWyZ3Y7LqSJTq0',
+                                      subject: 'MAT',
+                                      date: '2020-11-08')));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                backgroundColor: Colors.white,
+                bottomNavigationBar: new BottomAppBar(
+                  color: Colors.white,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          )
+                        },
+                        icon: Icon(
+                          Icons.home,
+                          color: Colors.deepOrange,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  floatingActionButton: new FloatingActionButton.extended(
-                    backgroundColor: Colors.deepOrange,
-                    icon: Icon(Icons.add),
-                    label: Text('Add New'),
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddStudentView(
-                                  group: docId,
-                                )),
-                      )
-                    },
-                  ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.endDocked,
-                  body: CustomScrollView(slivers: [
-                    SliverAppBar(
+                ),
+                floatingActionButton: new FloatingActionButton.extended(
+                  backgroundColor: Colors.deepOrange,
+                  icon: Icon(Icons.add),
+                  label: Text('Add New'),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddStudentView(
+                                group: docId,
+                              )),
+                    )
+                  },
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endDocked,
+                body: CustomScrollView(slivers: [
+                  SliverAppBar(
                       title: Icon(
                         Icons.local_play,
                         size: 50,
@@ -142,42 +143,38 @@ class GroupBody extends StatelessWidget {
                             "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
                             fit: BoxFit.cover,
                           ),
+                        ),])),
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(
+                              snapshot.data.data['students'][index]['name'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StudentBody(
+                                        docId: snapshot.data
+                                            .data['students'][index]['roll_no']
+                                            .toString(),
+                                      )),
+                            )
+                          },
                         ),
-                        SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                          (context, index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              elevation: 5,
-                              child: ListTile(
-                                title: Text(
-                                    snapshot.data.data['students'][index]
-                                        ['name'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                trailing: Icon(Icons.arrow_right),
-                                onTap: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => StudentBody(
-                                              docId: snapshot
-                                                  .data
-                                                  .data['students'][index]
-                                                      ['roll_no']
-                                                  .toString(),
-                                            )),
-                                  )
-                                },
-                              ),
-                            ),
-                          ),
-                          childCount: snapshot.data.data['students'].length,
-                        ))
-                      ]),
-                    )
-                  ]));
+                      ),
+                    ),
+                    childCount: snapshot.data.data['students'].length,
+                  ))
+                ]),
+              );
             } else {
               return Scaffold(
                 backgroundColor: Colors.white,
@@ -198,7 +195,6 @@ class GroupBody extends StatelessWidget {
                           color: Colors.deepOrange,
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -253,7 +249,8 @@ class GroupBody extends StatelessWidget {
           } else {
             return EmptyPage();
           }
-        }
+
+            }
         return Center(
             child: CircularProgressIndicator(
           strokeWidth: 16.0,
@@ -262,6 +259,259 @@ class GroupBody extends StatelessWidget {
         ));
       },
     );
+  }
+} */
+
+class GroupBody extends StatelessWidget {
+  final String docId;
+  GroupBody({this.docId});
+
+  final GroupService groupService = GroupService();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+        future: groupService.getDocument(docId),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data != null) {
+              return Scaffold(
+                drawer: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      DrawerHeader(
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ListTile(
+                        title: Text('Mark Attendance'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MarkAttendanceBody(
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Create Test'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Marks(
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Peek Attendance Record'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AttendancePeek(
+                                        title: 'yes',
+                                        group: docId,
+                                      )));
+                        },
+                      ),
+                      ListTile(
+                        leading:
+                            Icon(Icons.star_border, color: Colors.deepOrange),
+                        title: Text('Peek Test Score'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MarksBody(
+                                      group: 'A2IQlTxWyZ3Y7LqSJTq0',
+                                      subject: 'MAT',
+                                      date: '2020-11-08')));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                backgroundColor: Colors.white,
+                bottomNavigationBar: new BottomAppBar(
+                  color: Colors.white,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          )
+                        },
+                        icon: Icon(
+                          Icons.home,
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                floatingActionButton: new FloatingActionButton.extended(
+                  backgroundColor: Colors.deepOrange,
+                  icon: Icon(Icons.add),
+                  label: Text('Add New'),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddStudentView(
+                                group: docId,
+                              )),
+                    )
+                  },
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endDocked,
+                body: CustomScrollView(slivers: [
+                  SliverAppBar(
+                      title: Icon(
+                        Icons.local_play,
+                        size: 50,
+                      ),
+                      backgroundColor: Colors.white,
+                      floating: true,
+                      pinned: true,
+                      expandedHeight: 300,
+                      flexibleSpace: Stack(children: <Widget>[
+                        Positioned.fill(
+                          child: Image.network(
+                            "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ])),
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(
+                              snapshot.data.data['students'][index]['name'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StudentBody(
+                                        docId: snapshot.data
+                                            .data['students'][index]['roll_no']
+                                            .toString(),
+                                      )),
+                            )
+                          },
+                        ),
+                      ),
+                    ),
+                    childCount: snapshot.data.data['students'].length,
+                  ))
+                ]),
+              );
+            } else {
+              return Scaffold(
+                backgroundColor: Colors.white,
+                bottomNavigationBar: new BottomAppBar(
+                  color: Colors.white,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          )
+                        },
+                        icon: Icon(
+                          Icons.home,
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                floatingActionButton: new FloatingActionButton.extended(
+                  backgroundColor: Colors.deepOrange,
+                  icon: Icon(Icons.add),
+                  label: Text('Add New'),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddStudentView()),
+                    )
+                  },
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endDocked,
+                body: Center(
+                  child: Center(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 50.0,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  child: Icon(Icons.cancel_presentation_rounded,
+                                      size: 150.0, color: Colors.redAccent),
+                                ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text('Oops! Such Empty',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          }
+
+          return Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 16.0,
+            backgroundColor: Colors.amber,
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+          ));
+        });
   }
 }
 
@@ -309,7 +559,6 @@ class _AddGroupViewState extends State<AddGroupView> {
                 color: Colors.deepOrange,
               ),
             ),
-
           ],
         ),
       ),
@@ -355,7 +604,6 @@ class _AddGroupViewState extends State<AddGroupView> {
   }
 }
 
-
 class Marks extends StatefulWidget {
   final String group;
 
@@ -367,8 +615,6 @@ class Marks extends StatefulWidget {
 class MarksState extends State<Marks> {
   final GroupService groupService = GroupService();
   final TestService testService = TestService();
-
-
 
   @override
   Widget build(BuildContext context) {

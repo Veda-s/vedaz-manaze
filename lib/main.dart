@@ -59,7 +59,8 @@ class CoreApp extends StatelessWidget {
         //home: UnSuccesfulMessage(),
         //home: GroupBody(docId:'A2IQlTxWyZ3Y7LqSJTq0'),
         //home: AddGroupView(),
-        home: HomePage(),
+        //home: HomePage(),
+      home:DashBoard(6756),
         //home: SignIn(),
         //home:PointsLineChart.withSampleData()
         //home : DateTimeComboLinePointChart.withSampleData()

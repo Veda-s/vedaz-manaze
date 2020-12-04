@@ -79,13 +79,13 @@ class TestService {
     return subjectTest.document(date).get();
   }
 
-  Future<QuerySnapshot> getAllMarks(String group, String subject) {
+  Stream<QuerySnapshot> getAllMarks(String group, String subject) {
     CollectionReference subjectTest = Firestore.instance
         .collection('groups')
         .document(group)
         .collection(subject);
 
-    return subjectTest.getDocuments();
+    return subjectTest.snapshots();
   }
 
   Future<void> addMark(
