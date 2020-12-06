@@ -274,7 +274,8 @@ class GroupBody extends StatelessWidget {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data != null) {
+            if (snapshot.data != null &&
+                snapshot.data.data['students'] != null) {
               return Scaffold(
                 drawer: Drawer(
                   child: ListView(
@@ -337,10 +338,7 @@ class GroupBody extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MarksBody(
-                                      group: 'A2IQlTxWyZ3Y7LqSJTq0',
-                                      subject: 'MAT',
-                                      date: '2020-11-08')));
+                                  builder: (context) => TestPeek()));
                         },
                       ),
                     ],
@@ -419,10 +417,10 @@ class GroupBody extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => StudentBody(
-                                        docId: snapshot.data
-                                            .data['students'][index]['roll_no']
-                                            .toString(),
-                                      )),
+                                      docId: snapshot.data
+                                          .data['students'][index]['roll_no']
+                                          .toString(),
+                                      group: docId)),
                             )
                           },
                         ),
@@ -462,7 +460,10 @@ class GroupBody extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddStudentView()),
+                      MaterialPageRoute(
+                          builder: (context) => AddStudentView(
+                                group: docId,
+                              )),
                     )
                   },
                 ),
@@ -858,7 +859,7 @@ class _AttendanceListState extends State<AttendanceList> {
     try {
       final String result = await platform.invokeMethod(
           'send', <String, dynamic>{
-        "phone": "+919466473477",
+        "phone": "+91xxxxxxxxxx",
         "msg": "Hello! This is a test message."
       }); //Replace a 'X' with 10 digit phone number
       print(result);
@@ -936,7 +937,7 @@ class _AttendanceListState extends State<AttendanceList> {
               var formatter = new DateFormat('yyyy-MM-dd');
               String date = formatter.format(now);
               String message = "Your ward was absent today on $date";
-              List<String> recipents = ["9466473477", "123443215"];
+              List<String> recipents = ["1234567891", "1234567811"];
 
               _sendSMS(message, recipents);
             }).then((value) => Navigator.push(context,
@@ -1395,104 +1396,108 @@ class MarksBody extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  title: Icon(
-                    Icons.local_play,
-                    size: 50,
-                  ),
+          if (snapshot.data.data != null) {
+            return Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    title: Icon(
+                      Icons.local_play,
+                      size: 50,
+                    ),
 
-                  backgroundColor: Colors.white,
-                  floating: true,
-                  pinned: true, //flexibleSpace: Placeholder(),
-                  expandedHeight: 300,
-                  flexibleSpace: Stack(
-                    children: <Widget>[
-                      Positioned.fill(
-                        child: Image.network(
-                          "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-                          fit: BoxFit.cover,
+                    backgroundColor: Colors.white,
+                    floating: true,
+                    pinned: true, //flexibleSpace: Placeholder(),
+                    expandedHeight: 300,
+                    flexibleSpace: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: Image.network(
+                            "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  ListTile(
-                    leading: Icon(Icons.date_range, color: Colors.deepOrange),
-                    title: Text(date),
-                  ),
-                  ListTile(
-                    dense: true,
-                    title: Text(group,
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      elevation: 1,
-                      child: ListTile(
-                        trailing: Icon(Icons.local_play),
-                        title: Text(subject),
-                      ),
+                      ],
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.art_track),
-                    title: Text('Total Marks : ' +
-                        snapshot.data.data['total'].toString()),
-                  ),
-                ])),
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                  (context, index) => Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: Card(
-                            elevation: 10,
-                            child: ListTile(
-                              title: Text(
-                                snapshot.data.data['obtained'][index]['roll_no']
-                                        .toString() +
-                                    ':',
-                                style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontWeight: FontWeight.bold),
+                  SliverList(
+                      delegate: SliverChildListDelegate([
+                    ListTile(
+                      leading: Icon(Icons.date_range, color: Colors.deepOrange),
+                      title: Text(date),
+                    ),
+                    ListTile(
+                      dense: true,
+                      title: Text(group,
+                          style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 1,
+                        child: ListTile(
+                          trailing: Icon(Icons.local_play),
+                          title: Text(subject),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.art_track),
+                      title: Text('Total Marks : '),
+                    ),
+                  ])),
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                    (context, index) => Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            child: Card(
+                              elevation: 10,
+                              child: ListTile(
+                                title: Text(
+                                  snapshot.data
+                                          .data['obtained'][index]['roll_no']
+                                          .toString() +
+                                      ':',
+                                  style: TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-                        child: Card(
-                          color: Colors.deepOrange,
-                          elevation: 5,
-                          child: ListTile(
-                            title: Text(
-                                snapshot.data.data['obtained'][index]['marks']
-                                    .toString(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+                          child: Card(
+                            color: Colors.deepOrange,
+                            elevation: 5,
+                            child: ListTile(
+                              title: Text(
+                                  snapshot.data.data['obtained'][index]['marks']
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                  childCount: snapshot.data.data['obtained'].length,
-                )),
-              ],
-            ),
-          );
+                        )
+                      ],
+                    ),
+                    childCount: snapshot.data.data['obtained'].length,
+                  )),
+                ],
+              ),
+            );
+          } else {
+            return EmptyPage();
+          }
         }
         return Center(
             child: CircularProgressIndicator(
@@ -1501,6 +1506,110 @@ class MarksBody extends StatelessWidget {
           valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
         ));
       },
+    );
+  }
+}
+
+class MarksBodyData extends StatelessWidget {
+  final data;
+  MarksBodyData({this.data});
+
+  TestService testService = TestService();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Icon(
+              Icons.local_play,
+              size: 50,
+            ),
+
+            backgroundColor: Colors.white,
+            floating: true,
+            pinned: true, //flexibleSpace: Placeholder(),
+            expandedHeight: 300,
+            flexibleSpace: Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: Image.network(
+                    "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            ListTile(
+              leading: Icon(Icons.date_range, color: Colors.deepOrange),
+              title: Text(data.documentID),
+            ),
+            ListTile(
+              dense: true,
+              title: Text('',
+                  style: TextStyle(
+                      color: Colors.deepOrange, fontWeight: FontWeight.bold)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 1,
+                child: ListTile(
+                  trailing: Icon(Icons.local_play),
+                  title: Text(''),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.art_track),
+              title: Text('Total Marks : '),
+            ),
+          ])),
+          SliverList(
+              delegate: SliverChildBuilderDelegate(
+            (context, index) => Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Card(
+                      elevation: 10,
+                      child: ListTile(
+                        title: Text(
+                          data.data['obtained'][index]['roll_no'].toString() +
+                              ':',
+                          style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+                  child: Card(
+                    color: Colors.deepOrange,
+                    elevation: 5,
+                    child: ListTile(
+                      title: Text(
+                          data.data['obtained'][index]['marks'].toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            childCount: data.data['obtained'].length,
+          )),
+        ],
+      ),
     );
   }
 }
@@ -1601,5 +1710,227 @@ class _AttendancePeekState extends State<AttendancePeek> {
         ),
       ),
     );
+  }
+}
+
+class TestPeek extends StatefulWidget {
+  TestPeek({Key key, this.group}) : super(key: key);
+
+  final group;
+
+  @override
+  _TestPeekState createState() => _TestPeekState();
+}
+
+class _TestPeekState extends State<TestPeek> {
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(''),
+        backgroundColor: Colors.deepOrangeAccent,
+      ),
+      bottomNavigationBar: new BottomAppBar(
+        color: Colors.white,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              icon: Icon(
+                Icons.home,
+                color: Colors.deepOrange,
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: new FloatingActionButton.extended(
+        backgroundColor: Colors.deepOrange,
+        icon: Icon(Icons.calendar_today),
+        label: Text('Peek'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AttendanceBody(
+                    group: widget.group,
+                    date: "${selectedDate.toLocal()}".split(' ')[0])),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+                height: 100,
+                width: 200,
+                child: Card(
+                    elevation: 10,
+                    child: Center(
+                        child: Text(
+                      "${selectedDate.toLocal()}".split(' ')[0],
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    )))),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select date', style: TextStyle(color: Colors.white)),
+              elevation: 10,
+              color: Colors.deepOrangeAccent,
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select date', style: TextStyle(color: Colors.white)),
+              elevation: 10,
+              color: Colors.deepOrangeAccent,
+            ),
+            RaisedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select date', style: TextStyle(color: Colors.white)),
+              elevation: 10,
+              color: Colors.deepOrangeAccent,
+            ),
+            RaisedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select date', style: TextStyle(color: Colors.white)),
+              elevation: 10,
+              color: Colors.deepOrangeAccent,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TestRecordList extends StatelessWidget {
+  final group;
+  final subject;
+
+  TestRecordList({this.group, this.subject});
+
+  @override
+  Widget build(BuildContext context) {
+    TestService testService = TestService();
+
+    return StreamBuilder<QuerySnapshot>(
+        //stream: testService.getAllMarks('testgroup06', 'PHY'),
+        stream: testService.getAllMarks(group, subject),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              return Scaffold(
+                  backgroundColor: Colors.white,
+                  bottomNavigationBar: new BottomAppBar(
+                    color: Colors.white,
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                            )
+                          },
+                          icon: Icon(
+                            Icons.home,
+                            color: Colors.deepOrange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  floatingActionButton: new FloatingActionButton.extended(
+                    backgroundColor: Colors.deepOrange,
+                    icon: Icon(Icons.add),
+                    label: Text('Add New'),
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddStudentView()),
+                      )
+                    },
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.endDocked,
+                  body: CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate:
+                            SliverChildListDelegate([SizedBox(height: 70)]),
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                            (context, index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    color: Colors.deepOrange,
+                                    child: ListTile(
+                                      title: Text(
+                                        snapshot
+                                            .data.documents[index].documentID
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MarksBodyData(
+                                                        data: snapshot
+                                                                .data.documents[
+                                                            index])));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                            childCount: snapshot.data.documents.length),
+                      ),
+                    ],
+                  ));
+            }
+          }
+          return Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 16.0,
+            backgroundColor: Colors.amber,
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+          ));
+        });
   }
 }

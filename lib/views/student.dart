@@ -3,10 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test01/views/home.dart';
 import '../models.dart';
 import 'package:test01/services/services.dart';
+import 'package:test01/views/dashboard.dart';
 
 class StudentBody extends StatelessWidget {
   final String docId;
-  StudentBody({this.docId});
+  final group;
+  StudentBody({this.docId,this.group});
   @override
   Widget build(BuildContext context) {
     StudentService studentService = StudentService();
@@ -19,6 +21,58 @@ class StudentBody extends StatelessWidget {
               Student student = Student.fromMap(snapshot.data.data);
 
               return Scaffold(
+                drawer: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      DrawerHeader(
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ListTile(
+                        title: Text('DashBoard'),
+                      ),
+                      ListTile(
+                        title: Text('Physics'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashBoard(group, 'PHY', int.parse(docId))));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Mathematics'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashBoard(group, 'MAT', int.parse(docId))));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Chemistry'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashBoard(group, 'CHE', int.parse(docId))));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
 /*               appBar: AppBar(
                 backgroundColor: Colors.deepOrange,
                 centerTitle: true,

@@ -31,6 +31,7 @@ class ProgressChart extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: charts.TimeSeriesChart(
+
           seriesList,
           animate: animate,
           behaviors: [
@@ -47,7 +48,7 @@ class ProgressChart extends StatelessWidget {
                   charts.LinePointHighlighterFollowLineType.nearest,
             ),
 
-            new charts.ChartTitle('PHY',
+            new charts.ChartTitle('',
                 subTitle: 'Progress',
                 behaviorPosition: charts.BehaviorPosition.top,
                 titleOutsideJustification: charts.OutsideJustification.start,
@@ -73,22 +74,26 @@ class ProgressChart extends StatelessWidget {
                   0, 33.5, charts.RangeAnnotationAxisType.measure,
                   startLabel: 'Poor',
                   //endLabel: 'Poor',
-                  color: charts.MaterialPalette.deepOrange.shadeDefault),
+                  //color: charts.MaterialPalette.deepOrange.shadeDefault
+              ),
               new charts.RangeAnnotationSegment(
                   33.5, 65, charts.RangeAnnotationAxisType.measure,
                   startLabel: 'Mediocre',
                   //endLabel: 'Mediocre',
-                  color: charts.MaterialPalette.gray.shade200),
+                  //color: charts.MaterialPalette.gray.shade200
+              ),
               new charts.RangeAnnotationSegment(
                   65, 90, charts.RangeAnnotationAxisType.measure,
                   startLabel: 'Good',
                   //endLabel: 'Good',
-                  color: charts.MaterialPalette.lime.shadeDefault),
+                  //color: charts.MaterialPalette.lime.shadeDefault
+              ),
               new charts.RangeAnnotationSegment(
                   90, 100, charts.RangeAnnotationAxisType.measure,
                   startLabel: 'Excellent',
                   //endLabel: 'Excellent',
-                  color: charts.MaterialPalette.green.shadeDefault),
+                  //color: charts.MaterialPalette.green.shadeDefault
+              ),
 /*               new charts.LineAnnotationSegment(
                   40, charts.RangeAnnotationAxisType.measure,
                   color: charts.MaterialPalette.black), */

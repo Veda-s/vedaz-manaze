@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data != null) {
+          if (snapshot.data != null && snapshot.data.data['groups'] != null) {
             return Scaffold(
                 bottomNavigationBar: new BottomAppBar(
                   color: Colors.white,
