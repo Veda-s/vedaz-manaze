@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test01/views/home.dart';
+import 'package:test01/views/views.dart';
 import '../models.dart';
 import 'package:test01/services/services.dart';
 import 'package:test01/views/dashboard.dart';
@@ -8,7 +8,7 @@ import 'package:test01/views/dashboard.dart';
 class StudentBody extends StatelessWidget {
   final String docId;
   final group;
-  StudentBody({this.docId,this.group});
+  StudentBody({this.docId, this.group});
   @override
   Widget build(BuildContext context) {
     StudentService studentService = StudentService();
@@ -26,12 +26,9 @@ class StudentBody extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     children: <Widget>[
                       DrawerHeader(
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                        child: Container(
+                          child: Icon(Icons.subject,
+                              size: 50, color: Colors.white),
                         ),
                         decoration: BoxDecoration(
                           color: Colors.deepOrange,
@@ -40,8 +37,21 @@ class StudentBody extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      ListTile(
-                        title: Text('DashBoard'),
+                      Container(
+                        color: Colors.deepOrange,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.show_chart,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            'DashBoard',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                       ListTile(
                         title: Text('Physics'),
@@ -49,7 +59,8 @@ class StudentBody extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashBoard(group, 'PHY', int.parse(docId))));
+                                  builder: (context) => DashBoard(
+                                      group, 'PHY', int.parse(docId))));
                         },
                       ),
                       ListTile(
@@ -58,7 +69,8 @@ class StudentBody extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashBoard(group, 'MAT', int.parse(docId))));
+                                  builder: (context) => DashBoard(
+                                      group, 'MAT', int.parse(docId))));
                         },
                       ),
                       ListTile(
@@ -67,7 +79,8 @@ class StudentBody extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashBoard(group, 'CHE', int.parse(docId))));
+                                  builder: (context) => DashBoard(
+                                      group, 'PHY', int.parse(docId))));
                         },
                       ),
                     ],
@@ -286,8 +299,7 @@ class StudentBody extends StatelessWidget {
                         child: Card(
                           elevation: 10,
                           child: ListTile(
-                            title: Text(
-                                student.contact['primaryContact'] ?? 'N/A'),
+                            title: Text(student.contact['primary'] ?? 'N/A'),
                             subtitle: Text('Primary Contact'),
                             //title: Text('# $index'),
                             trailing: Icon(Icons.ac_unit),
@@ -302,8 +314,7 @@ class StudentBody extends StatelessWidget {
                         child: Card(
                           elevation: 10,
                           child: ListTile(
-                            title: Text(
-                                student.contact['secondaryContact'] ?? 'N/A'),
+                            title: Text(student.contact['secondary'] ?? 'N/A'),
                             subtitle: Text('Secondary Contact'),
                             //title: Text('# $index'),
                             trailing: Icon(Icons.ac_unit),
@@ -366,10 +377,10 @@ class AddStudentView extends StatefulWidget {
   final group;
   AddStudentView({this.group});
   @override
-  SCWVState createState() => SCWVState();
+  _AddStudentViewState createState() => _AddStudentViewState();
 }
 
-class SCWVState extends State<AddStudentView> {
+class _AddStudentViewState extends State<AddStudentView> {
   StudentService studentService = StudentService();
 
   final firstName = TextEditingController();
@@ -394,7 +405,6 @@ class SCWVState extends State<AddStudentView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
 /*         appBar: AppBar(
           backgroundColor: Colors.deepOrange,
@@ -412,10 +422,12 @@ class SCWVState extends State<AddStudentView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                onPressed: () => {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-                )},
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  )
+                },
                 icon: Icon(
                   Icons.home,
                   color: Colors.deepOrange,
@@ -429,35 +441,36 @@ class SCWVState extends State<AddStudentView> {
           icon: Icon(Icons.add),
           label: Text('Add New'),
           onPressed: () {
-                Map<String, dynamic> theData = {
-      'name': {
-        'first': firstName.text ?? 'N/A',
-        'middle': middleName.text ?? 'N/A',
-        'last': lastName.text ?? 'N/A'
-      },
-      'guardian_name': {
-        'father_name': fatherName.text ?? 'N/A',
-        'mother_name': motherName.text ?? 'N/A',
-        'guardian_name': guardianName.text ?? 'N/A'
-      },
-      'contact': {
-        'primary': primaryContact.text ?? 'N/A',
-        'secondary': secondaryContact.text ?? 'N/A',
-        'email': email.text ?? 'N/A',
-        'address': address.text ?? 'N/A'
-      },
-      'program': program.text ?? 'N/A',
-      'group': widget.group,
-      'roll_no': rollNo.text ?? 'N/A',
-      'reg_no': regNo.text ?? 'N/A',
-    };
-    
+            Map<String, dynamic> theData = {
+              'name': {
+                'first': firstName.text ?? 'N/A',
+                'middle': middleName.text ?? 'N/A',
+                'last': lastName.text ?? 'N/A'
+              },
+              'guardian_name': {
+                'father_name': fatherName.text ?? 'N/A',
+                'mother_name': motherName.text ?? 'N/A',
+                'guardian_name': guardianName.text ?? 'N/A'
+              },
+              'contact': {
+                'primary': primaryContact.text ?? 'N/A',
+                'secondary': secondaryContact.text ?? 'N/A',
+                'email': email.text ?? 'N/A',
+                'address': address.text ?? 'N/A'
+              },
+              'program': program.text ?? 'N/A',
+              'group': widget.group,
+              'roll_no': rollNo.text ?? 'N/A',
+              'reg_no': regNo.text ?? 'N/A',
+            };
+
             studentService
                 .addStudent(theData['roll_no'], theData)
                 .then((value) => studentService.addStudentToGroup(
                     widget.group,
                     theData['name']['first'],
-                    theData['roll_no']))
+                    theData['roll_no'],
+                    theData['contact']['primary']))
                 .then((value) => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomePage()),
@@ -475,7 +488,13 @@ class SCWVState extends State<AddStudentView> {
           child: ListView(
             physics: BouncingScrollPhysics(),
             children: [
-              ListTile(leading:Icon(Icons.info,color:Colors.deepOrange),title: Text('student info',style:TextStyle(fontWeight: FontWeight.bold,)),),
+              ListTile(
+                leading: Icon(Icons.info, color: Colors.deepOrange),
+                title: Text('student info',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -511,7 +530,13 @@ class SCWVState extends State<AddStudentView> {
               SizedBox(
                 height: 20,
               ),
-              ListTile(leading:Icon(Icons.info,color:Colors.deepOrange),title: Text('info',style:TextStyle(fontWeight: FontWeight.bold,)),),
+              ListTile(
+                leading: Icon(Icons.info, color: Colors.deepOrange),
+                title: Text('info',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -545,7 +570,13 @@ class SCWVState extends State<AddStudentView> {
               SizedBox(
                 height: 20,
               ),
-              ListTile(leading:Icon(Icons.info,color:Colors.deepOrange),title: Text('Gaurdian info',style:TextStyle(fontWeight: FontWeight.bold,)),),
+              ListTile(
+                leading: Icon(Icons.info, color: Colors.deepOrange),
+                title: Text('Gaurdian info',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -579,7 +610,13 @@ class SCWVState extends State<AddStudentView> {
               SizedBox(
                 height: 20,
               ),
-              ListTile(leading:Icon(Icons.info,color:Colors.deepOrange),title: Text('Contact info',style:TextStyle(fontWeight: FontWeight.bold,)),),
+              ListTile(
+                leading: Icon(Icons.info, color: Colors.deepOrange),
+                title: Text('Contact info',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -643,231 +680,3 @@ class SCWVState extends State<AddStudentView> {
     ); */
   }
 }
-
-class SuccesfulMessage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: FloatingActionButton(
-          onPressed: () => {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            )
-          },
-          child: Icon(Icons.home),
-          backgroundColor: Colors.green,
-          elevation: 50,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: Center(
-        child: Container(
-          height: 300,
-          width: 300,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 50.0,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Icon(Icons.done_all_outlined,
-                        size: 170.0, color: Colors.green),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text('Succesful !',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class UnSuccesfulMessage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: 'retry',
-              onPressed: () => { Navigator.of(context).pop()},
-              child: Icon(Icons.replay),
-              backgroundColor: Colors.amberAccent,
-              elevation: 50,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: 'home',
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                )
-              },
-              child: Icon(Icons.home),
-              backgroundColor: Colors.red,
-              elevation: 50,
-              mini: true,
-            ),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      body: Center(
-        child: Container(
-          height: 300,
-          width: 300,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 50.0,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Icon(Icons.cancel_presentation_rounded,
-                          size: 150.0, color: Colors.redAccent),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text('Failed !',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class EmptyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: 'retry',
-              onPressed: () => {Navigator.pop(context)},
-              child: Icon(Icons.replay),
-              backgroundColor: Colors.amberAccent,
-              elevation: 50,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: 'home',
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                )
-              },
-              child: Icon(Icons.home),
-              backgroundColor: Colors.red,
-              elevation: 50,
-              mini: true,
-            ),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      body: Center(
-        child: Container(
-          height: 300,
-          width: 300,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 50.0,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Icon(Icons.cancel_presentation_rounded,
-                          size: 150.0, color: Colors.redAccent),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text('Oops! 404',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/* Column(
-                  children: [
-                    Container(
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Text(student.group ?? ''),
-                            Text(student.program ?? ''),
-                            Text(student.rollNo ?? ''),
-                            Text(student.regNo ?? '')
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Card(
-                        child: Column(
-                          children: <Widget>[
-                            Text(student.name['first'] ?? ''),
-                            Text(student.name['middle'] ?? ''),
-                            Text(student.name['last'] ?? ''),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Text(student.contact['primaryContact'] ?? ''),
-                            Text(student.contact['secondaryContact'] ?? 'N/A'),
-                            Text(student.contact['email'] ?? ''),
-                            Text(student.contact['address'] ?? '')
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ) */

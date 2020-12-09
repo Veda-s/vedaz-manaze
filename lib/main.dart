@@ -3,10 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:test01/views/dashboard.dart';
 import 'package:test01/views/dashboard.dart';
 
-import 'package:test01/views/dash.dart';
-import 'package:test01/views/dash2.dart';
 
-import 'package:test01/views/sms.dart';
 
 import 'models.dart';
 import 'views/views.dart';
@@ -59,8 +56,8 @@ class CoreApp extends StatelessWidget {
         //home: UnSuccesfulMessage(),
         //home: GroupBody(docId:'A2IQlTxWyZ3Y7LqSJTq0'),
         //home: AddGroupView(),
-      //  home: HomePage(),
-      home:TestRecordList(group: 'testgroup06',subject: 'PHY',),
+        home: HomePage(),
+      //home:TestRecordList(group: 'testgroup06',subject: 'PHY',),
       //home:DashBoard('testgroup06','PHY',6756),
         //home: SignIn(),
         //home:PointsLineChart.withSampleData()

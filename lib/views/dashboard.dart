@@ -38,8 +38,9 @@ class DashBoard extends StatelessWidget {
         //stream: testService.getAllMarks('testgroup06', 'PHY'),
         stream: testService.getAllMarks(group, subject),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            if(snapshot.connectionState == ConnectionState.active){
+
+            print(snapshot.toString());
+            if(snapshot.connectionState == ConnectionState.active && snapshot.data != null){
               print('no. of docs' + snapshot.data.documents.length.toString());
               snapshot.data.documents.forEach((ele) {
                 record.add(ProgressRecord(
@@ -152,7 +153,7 @@ class DashBoard extends StatelessWidget {
             }
 
 
-          }
+
 
           return Center(
               child: CircularProgressIndicator(

@@ -39,6 +39,7 @@ dependencies:
   charts_flutter:
   local_auth: ^0.6.3+4
   flutter_sms: ^2.1.1
+  permission_handler:
   
   cupertino_icons: ^1.0.0
 

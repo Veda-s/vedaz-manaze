@@ -15,12 +15,12 @@ class StudentService {
     return students.document(docId).setData(data);
   }
 
-  Future<void> addStudentToGroup(String docID, String name, String rollNo) {
+  Future<void> addStudentToGroup(String docID, String name, String rollNo,String contact) {
     CollectionReference groups = Firestore.instance.collection('groups');
     print(docID);
     return groups.document(docID).updateData({
       'students': FieldValue.arrayUnion([
-        {'name': name, 'roll_no': rollNo}
+        {'name': name, 'roll_no': rollNo,'contact':contact}
       ])
     });
   }

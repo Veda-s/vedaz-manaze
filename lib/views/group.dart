@@ -8,6 +8,8 @@ import '../utils.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
+import 'package:permission_handler/permission_handler.dart';
 
 /* class GroupBody extends StatelessWidget {
   final String docId;
@@ -787,13 +789,13 @@ class MarkAttendanceBody extends StatefulWidget {
   _MarkAttendanceBodyState createState() => _MarkAttendanceBodyState();
 }
 
-void _sendSMS(String message, List<String> recipents) async {
+/* void _sendSMS(String message, List<String> recipents) async {
   String _result = await sendSMS(message: message, recipients: recipents)
       .catchError((onError) {
     print(onError);
   });
   print(_result);
-}
+} */
 
 class _MarkAttendanceBodyState extends State<MarkAttendanceBody> {
   final GroupService groupService = GroupService();
@@ -847,6 +849,7 @@ class AttendanceList extends StatefulWidget {
 
 class _AttendanceListState extends State<AttendanceList> {
   final AttendanceService attendanceService = AttendanceService();
+  static const platform = const MethodChannel('vedaz.sms/SendSMS');
 
   final List<String> list1 = [];
   final List<String> list3 = []; //present
@@ -867,6 +870,40 @@ class _AttendanceListState extends State<AttendanceList> {
       print(e.toString());
     }
   } */
+
+  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+
+  Future<void> requestPermission(Permission permission) async {
+    final status = await permission.request();
+
+    setState(() {
+      print(status);
+      _permissionStatus = status;
+      print(_permissionStatus);
+    });
+  }
+
+  void _listenForPermissionStatus(Permission _permission) async {
+    final status = await _permission.status;
+    setState(() => _permissionStatus = status);
+  }
+
+  Future<int> _sendMultipleSms(String message, String contact) async {
+    //here we call our java code through platform channel...
+
+      int result = await platform
+          .invokeMethod('sendText', {"message": message, "contact": contact});
+      print(result);
+      return 1;
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _listenForPermissionStatus(Permission.sms);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -912,7 +949,7 @@ class _AttendanceListState extends State<AttendanceList> {
               ),
               IconButton(
                 onPressed: () {
-                  /* sendSms(); */
+
                 },
                 icon: Icon(
                   Icons.ac_unit,
@@ -923,16 +960,68 @@ class _AttendanceListState extends State<AttendanceList> {
           ),
         ),
         floatingActionButton: new FloatingActionButton.extended(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: _permissionStatus == PermissionStatus.granted
+              ? Colors.deepOrange
+              : Colors.grey,
           icon: Icon(Icons.send),
           label: Text('Mark'),
           onPressed: () {
-            Map<String, dynamic> data = Map<String, dynamic>();
+            requestPermission(Permission.sms);
+            if (_permissionStatus == PermissionStatus.granted) {
+              //sms send
+              //navigate out
+              Map<String, dynamic> data = Map<String, dynamic>();
+              List<String> recipents = [];
 
-            data['present'] = list3;
-            data['absent'] = list2;
+              data['present'] = list3;
+              data['absent'] = list2;
 
-            attendanceService.markAttendance(widget.group, data).then((value) {
+
+              widget.snapshot.data.data['students'].forEach((element) {
+                if(element['contact'] != null){
+                recipents.add(element['contact']);
+                print('contact :' + element['contact']);
+              }});
+
+              attendanceService
+                  .markAttendance(widget.group, data)
+                  .then((value) {
+                var now = new DateTime.now();
+                var formatter = new DateFormat('yyyy-MM-dd');
+                String date = formatter.format(now);
+
+                String message = "Your ward was absent today on $date";
+
+                //List<String> recipents = ["1234567891", "1234567811"];
+
+                recipents.forEach((element) {
+                  if(element!='') {
+                    _sendMultipleSms(message, element)
+                        .catchError((onError)  {
+                      print(onError);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UnSuccesfulMessage()));
+                    });
+                        
+                  }});
+              })
+                  .then((value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SuccesfulMessage())))
+                  .catchError((onError)  {
+                    print(onError);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UnSuccesfulMessage()));
+              });
+            }
+
+
+/*             attendanceService.markAttendance(widget.group, data).then((value) {
               var now = new DateTime.now();
               var formatter = new DateFormat('yyyy-MM-dd');
               String date = formatter.format(now);
@@ -941,7 +1030,7 @@ class _AttendanceListState extends State<AttendanceList> {
 
               _sendSMS(message, recipents);
             }).then((value) => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SuccesfulMessage())));
+                MaterialPageRoute(builder: (context) => SuccesfulMessage()))); */
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
